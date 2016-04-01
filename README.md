@@ -1,6 +1,6 @@
 # geocube_ems
 
-upload the sql file in php my admin
+upload the sql file in phpmyadmin
 here is the login details:
 admin:28
 employee:29
