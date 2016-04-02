@@ -5,31 +5,31 @@
   if(isset($_GET['delete_id']))
   {
    $sql_query="DELETE FROM emp_ref_table WHERE emp_id=".$_GET['delete_id'];
-    mysqli_query($conn,$sql_query);
-    header("Location: $_SERVER[PHP_SELF]");
+   mysqli_query($sql_query);
+   header("Location: $_SERVER[PHP_SELF]");
   }
   if(isset($_GET['delete_id']))
   {
   $sql_query="DELETE FROM dept_ref_table WHERE dept_id=".$_GET['delete_id'];
-  mysqli_query($sql_query);
+  mysqlii_query($sql_query);
   header("Location: $_SERVER[PHP_SELF]");
   }
   if(isset($_GET['delete_id']))
   {
    $sql_query="DELETE FROM project_ref_table WHERE project_id=".$_GET['delete_id'];
-   mysqli_query($sql_query);
+   mysqlii_query($sql_query);
    header("Location: $_SERVER[PHP_SELF]");
   }
   if(isset($_GET['delete_id']))
   {
    $sql_query="DELETE FROM client_ref_table WHERE client_id=".$_GET['delete_id'];
-   mysqli_query($sql_query);
+   mysqlii_query($sql_query);
    header("Location: $_SERVER[PHP_SELF]");
   }
   if(isset($_GET['delete_id']))
   {
    $sql_query="DELETE FROM salary_ref_table WHERE salary_id=".$_GET['delete_id'];
-   mysqli_query($sql_query);
+   mysqlii_query($sql_query);
    header("Location: $_SERVER[PHP_SELF]");
   }
   $now = time();
@@ -37,7 +37,7 @@
         if ($now > $_SESSION['expire']) {
             session_destroy();
             echo "<script language=\"JavaScript\">\n";
-      echo "alert('session expired,login again');\n";
+    
       echo "window.location='login_form.php'";
       echo "</script>";
         }
@@ -56,7 +56,6 @@
     <meta name="author" content="">
 
     <title>Admin</title>
-    <script type="text/javascript" src="js/jquery.js"></script>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -109,22 +108,13 @@
     window.location.href='editSalaries.php?edit_id='+id;
    }
   }
-/*
-  function changeImage() {
-    var image = document.getElementById('myImage');
-    console.log(image);
-    if (image.src.match("img/disable.png")) {
-        image.src = "img/enable.png";
-    } else {
-        image.src = "img/disable.png";
-    }*/
-     function delete_id(id)
+  function delete_id(id)
   {
    if(confirm('Sure to Delete ?'))
    {
     window.location.href='index.php?delete_id='+id;
    }
-}
+  }
 </script>
 
 </head>
@@ -188,7 +178,7 @@
                 <div class="row">
                 <div class="col-md-6">
 <h3 style="color:red;">Employees</h3>
-                        <table class="table table-sm table-responsive">
+                        <table class="table table-sm">
     <thead>
       <tr>
         <th>Employee ID</th>
@@ -196,12 +186,13 @@
         <th>Contact Number</th>
         <th>Account Numberr</th>
         <th>Address</th>
-        <th >Operations</th>
+        <th colspan="2">Operations</th>
       </tr>
     </thead>
 <tbody>
       <?php
-      $employee_sql = mysqli_query($conn, " CALL viewEmployees(); ");
+      $db = mysqli_connect('localhost','root','','employee_manage_portal');
+      $employee_sql = mysqli_query($db, " CALL viewEmployees(); ");
       while($row = mysqli_fetch_array($employee_sql))
       {
       ?>
@@ -217,33 +208,28 @@
         <?php
         }
         mysqli_free_result($employee_sql);
-        mysqli_next_result($conn);
+        mysqli_next_result($db);
         ?>
 </tbody>
 </table>
                </div>
                <div class="col-md-6">
 <h3 style="color:red">Departments</h3>
-                       <table class="table table-sm table-responsive">
+                       <table class="table table-sm">
            <thead>
-           <?php
-            $col = mysqli_query($conn, "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = \'employee_manage_portal\' AND TABLE_NAME = \'emp_ref_table\'") or die(mysqli_error($conn));
-            while($column = mysqli_fetch_array($col))
-            {
-           ?>
            <tr>
-           <th><?php echo $column[0];?></th>
-           <th><?php echo $column[1];?></th>
-           <th  >Operations</th>
-           <?php
-            }
-            ?>
+           <th>Dept. ID</th>
+           <th>Dept. Name</th>
+           <th colspan="2">Operations</th>
+
+
            </tr>
            </thead>
            <tbody>
 
            <?php
-           $sql = mysqli_query($conn, " CALL viewDepartment(); ");
+           $db = mysqli_connect('localhost','root','','employee_manage_portal');
+           $sql = mysqli_query($db, " CALL viewDepartment(); ");
            while($row = mysqli_fetch_array($sql))
            {
            ?>
@@ -256,7 +242,7 @@
            <?php
            }
            mysqli_free_result($sql);
-           mysqli_next_result($conn);
+           mysqli_next_result($db);
            ?>
 
            </tbody>
@@ -269,7 +255,7 @@
 
                 <div class="col-md-6">
       <h3 style="color:red">Projects</h3>
-                        <table class="table table-sm table-responsive">
+                        <table class="table table-sm">
       <thead>
       <tr>
         <th>Project ID</th>
@@ -284,7 +270,8 @@
 
       <tbody>
       <?php
-      $project_sql = mysqli_query($conn, " CALL viewProject(); ");
+      $db = mysqli_connect('localhost','root','','employee_manage_portal');
+      $project_sql = mysqli_query($db, " CALL viewProject(); ");
       while($row = mysqli_fetch_array($project_sql))
       {
       ?>
@@ -301,7 +288,7 @@
           <?php
       }
       mysqli_free_result($project_sql);
-      mysqli_next_result($conn);
+      mysqli_next_result($db);
           ?>
 
 
@@ -314,7 +301,7 @@
 
       <div class="col-md-6">
       <h3 style="color:red">Clients</h3>
-              <table class="table table-sm table-responsive">
+              <table class="table table-sm">
 
       <thead>
       <tr>
@@ -322,13 +309,14 @@
       <th>Client Name</th>
       <th>Client Email</th>
       <th>Client Address</th>
-      <th  >Operations</th>
+      <th colspan="2">Operations</th>
       </tr>
       </thead>
       <tbody>
 
       <?php
-      $clientSql = mysqli_query($conn,"CALL viewClient();");
+      $db = mysqli_connect('localhost','root','','employee_manage_portal');
+      $clientSql = mysqli_query($db,"CALL viewClient();");
 
       while($clientRow=mysqli_fetch_array($clientSql))
       {
@@ -343,7 +331,7 @@
       <?php
       }
       mysqli_free_result($clientSql);
-      mysqli_next_result($conn);
+      mysqli_next_result($db);
       ?>
 
       </tbody>
@@ -356,7 +344,7 @@
 
                    <div class="col-md-6">
    <h3 style="color:red;">Salaries</h3>
-                           <table class="table table-sm table-responsive">
+                           <table class="table table-sm">
        <thead>
          <tr>
            <th>Salary Id</td>
@@ -370,8 +358,8 @@
        </thead>
    <tbody>
      <?php
-    
-     $salarySql = mysqli_query($conn,"CALL viewSalary();");
+     $db = mysqli_connect('localhost','root','','employee_manage_portal');
+     $salarySql = mysqli_query($db,"CALL viewSalary();");
      while($row=mysqli_fetch_array($salarySql))
      {
      ?>
@@ -386,7 +374,7 @@
      <?php
      }
      mysqli_free_result($salarySql);
-     mysqli_next_result($conn);
+     mysqli_next_result($db);
      ?>
 
    </tbody>
@@ -444,25 +432,7 @@ include 'settings_table.php';
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-      /*$(document).ready(function() {  
-        $('#slick-toggle').click(function() {
-         var srcname = $('img',this).attr('src');
-         console.log(srcname);
-        alert ('sure to change the status ?');
-         if(srcname == 'img/enable.png')
-         {
-          $(this).attr('src','img/disable.png');
-         }
-         else
-         {
-          $(this).attr('src','img/enable.png');
-         }
-          });
-         
-       });*/
 
-    </script>
 
 
 </body>
