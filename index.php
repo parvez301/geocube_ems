@@ -1,6 +1,7 @@
 <?php
-  include 'web_services/session.php';
   include 'web_services/dbconfig.php';
+  include 'web_services/session.php';
+
 
   if(isset($_GET['delete_id']))
   {
@@ -191,8 +192,8 @@
     </thead>
 <tbody>
       <?php
-      $db = mysqli_connect('localhost','root','','employee_manage_portal');
-      $employee_sql = mysqli_query($db, " CALL viewEmployees(); ");
+     
+      $employee_sql = mysqli_query($conn, " CALL viewEmployees(); ");
       while($row = mysqli_fetch_array($employee_sql))
       {
       ?>
@@ -208,7 +209,7 @@
         <?php
         }
         mysqli_free_result($employee_sql);
-        mysqli_next_result($db);
+        mysqli_next_result($conn);
         ?>
 </tbody>
 </table>
@@ -228,8 +229,8 @@
            <tbody>
 
            <?php
-           $db = mysqli_connect('localhost','root','','employee_manage_portal');
-           $sql = mysqli_query($db, " CALL viewDepartment(); ");
+          
+           $sql = mysqli_query($conn, " CALL viewDepartment(); ");
            while($row = mysqli_fetch_array($sql))
            {
            ?>
@@ -242,7 +243,7 @@
            <?php
            }
            mysqli_free_result($sql);
-           mysqli_next_result($db);
+           mysqli_next_result($conn);
            ?>
 
            </tbody>
@@ -270,8 +271,7 @@
 
       <tbody>
       <?php
-      $db = mysqli_connect('localhost','root','','employee_manage_portal');
-      $project_sql = mysqli_query($db, " CALL viewProject(); ");
+      $project_sql = mysqli_query($conn, " CALL viewProject(); ");
       while($row = mysqli_fetch_array($project_sql))
       {
       ?>
@@ -288,7 +288,7 @@
           <?php
       }
       mysqli_free_result($project_sql);
-      mysqli_next_result($db);
+      mysqli_next_result($conn);
           ?>
 
 
@@ -315,8 +315,8 @@
       <tbody>
 
       <?php
-      $db = mysqli_connect('localhost','root','','employee_manage_portal');
-      $clientSql = mysqli_query($db,"CALL viewClient();");
+  
+      $clientSql = mysqli_query($conn,"CALL viewClient();");
 
       while($clientRow=mysqli_fetch_array($clientSql))
       {
@@ -331,7 +331,7 @@
       <?php
       }
       mysqli_free_result($clientSql);
-      mysqli_next_result($db);
+      mysqli_next_result($conn);
       ?>
 
       </tbody>
@@ -358,8 +358,7 @@
        </thead>
    <tbody>
      <?php
-     $db = mysqli_connect('localhost','root','','employee_manage_portal');
-     $salarySql = mysqli_query($db,"CALL viewSalary();");
+     $salarySql = mysqli_query($conn,"CALL viewSalary();");
      while($row=mysqli_fetch_array($salarySql))
      {
      ?>
@@ -374,7 +373,7 @@
      <?php
      }
      mysqli_free_result($salarySql);
-     mysqli_next_result($db);
+     mysqli_next_result($conn);
      ?>
 
    </tbody>
